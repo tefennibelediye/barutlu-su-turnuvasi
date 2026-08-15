@@ -45,6 +45,7 @@
     flex-shrink: 0;
   }
 
+  /* Kilitli ve Editlemesiz Görünüm */
   .match-row input { 
     width: 32px; 
     height: 26px;
@@ -74,13 +75,15 @@
   .legend-item { display: flex; align-items: center; gap: 8px; }
   .badge-qualified { width: 14px; height: 14px; background-color: #dcfce7; border: 1px solid #86efac; border-radius: 3px; display: inline-block; }
 
-  .playoff-container { background: white; border-radius: 10px; padding: 20px; max-width: 800px; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-  .playoff-match { display: flex; justify-content: space-between; padding: 10px; background: #f1f5f9; margin-bottom: 8px; border-radius: 6px; font-weight: bold; }
+  /* Çeyrek Final Alanını Gizleyen Stil */
+  .playoff-container { 
+    display: none !important; 
+  }
 </style>
 </head>
 <body>
 
-<h1>🏆 2026 | Barutlu Su Futbol Turnuvası | Fikstür ve Puan Durumu</h1>
+<h1>🏆 Barutlu Su Futbol Turnuvası Fikstür ve Puan Durumu 🏆</h1>
 
 <div class="grid-container" id="groups-wrapper"></div>
 
@@ -96,11 +99,10 @@
   </div>
 </div>
 
+<!-- Çeyrek Final Eşleşmeleri (CSS ile Gizlendi) -->
 <div class="playoff-container">
   <h2>⚔️ Çeyrek Final Eşleşmeleri</h2>
-  <div id="playoffs">
-    <p style="text-align: center; color: #666;">Grup maçları tamamlandığında çeyrek final eşleşmeleri burada listelenecektir.</p>
-  </div>
+  <div id="playoffs"></div>
 </div>
 
 <script>
@@ -230,8 +232,6 @@ function renderMatchRow(gName, m, idx) {
 }
 
 function calculateTournament() {
-  const qualifiedTeams = {};
-
   for (let gName in groupsData) {
     let stats = {};
     groupsData[gName].teams.forEach(t => {
@@ -265,7 +265,6 @@ function calculateTournament() {
 
     let teamList = Object.values(stats);
 
-    // Sıralama Önceliği: Puan -> İkili Averaj -> Genel Averaj -> Atılan Gol -> Yenilen Gol (En az)
     teamList.sort((a, b) => {
       if (b.P !== a.P) return b.P - a.P;
 
@@ -281,7 +280,7 @@ function calculateTournament() {
 
       if (b.AV !== a.AV) return b.AV - a.AV;
       if (b.GF !== a.GF) return b.GF - a.GF;
-      return a.GA - b.GA; // En az gol yiyen üste çıkar
+      return a.GA - b.GA;
     });
 
     let tbody = document.getElementById(`table-${gName}`);
@@ -293,17 +292,7 @@ function calculateTournament() {
         <td>${t.GF}</td><td>${t.GA}</td><td>${t.AV}</td><td><strong>${t.P}</strong></td>
       </tr>
     `).join('');
-
-    qualifiedTeams[gName] = [teamList[0].name, teamList[1].name];
   }
-
-  const playoffsDiv = document.getElementById('playoffs');
-  playoffsDiv.innerHTML = `
-    <div class="playoff-match"><span>Çeyrek Final 1:</span> <span>${qualifiedTeams["A Grubu"][0]} (A1) vs ${qualifiedTeams["B Grubu"][1]} (B2)</span></div>
-    <div class="playoff-match"><span>Çeyrek Final 2:</span> <span>${qualifiedTeams["B Grubu"][0]} (B1) vs ${qualifiedTeams["A Grubu"][1]} (A2)</span></div>
-    <div class="playoff-match"><span>Çeyrek Final 3:</span> <span>${qualifiedTeams["C Grubu"][0]} (C1) vs ${qualifiedTeams["D Grubu"][1]} (D2)</span></div>
-    <div class="playoff-match"><span>Çeyrek Final 4:</span> <span>${qualifiedTeams["D Grubu"][0]} (D1) vs ${qualifiedTeams["C Grubu"][1]} (C2)</span></div>
-  `;
 }
 
 window.onload = initUI;
