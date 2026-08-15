@@ -25,7 +25,6 @@
     text-transform: uppercase;
   }
   
-  /* Maç Hizalama Düzenlemeleri */
   .match-row { 
     display: flex; 
     align-items: center; 
@@ -51,29 +50,17 @@
     height: 26px;
     text-align: center; 
     padding: 0; 
-    border: 1px solid #ccc; 
-    border-radius: 4px; 
+    border: none; 
+    background-color: transparent;
     font-weight: bold; 
-    font-size: 13px;
-    -moz-appearance: textfield;
+    font-size: 14px;
+    color: #1e293b;
+    pointer-events: none;
   }
 
-  .match-row input::-webkit-outer-spin-button,
-  .match-row input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  
-  .btn-container { text-align: center; margin: 20px 0 15px 0; }
-  .btn-calc { padding: 12px 24px; background: #16a34a; color: white; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; margin-right: 10px; }
-  .btn-calc:hover { background: #15803d; }
-  .btn-reset { padding: 12px 20px; background: #dc2626; color: white; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; }
-  .btn-reset:hover { background: #b91c1c; }
-
-  /* Bilgi Notları Alanı */
   .legend-container {
     max-width: 800px;
-    margin: 0 auto 25px auto;
+    margin: 20px auto 25px auto;
     background: white;
     padding: 12px 20px;
     border-radius: 8px;
@@ -93,14 +80,9 @@
 </head>
 <body>
 
-<h1>🏆 2026 | Barutlu Su Futbol Turnuvası | Fikstür ve Puan Durumu 🏆</h1>
+<h1>🏆 2026 | Barutlu Su Futbol Turnuvası | Fikstür ve Puan Durumu</h1>
 
 <div class="grid-container" id="groups-wrapper"></div>
-
-<div class="btn-container">
-  <button class="btn-calc" onclick="calculateTournament()">Puan Durumunu Güncelle ve Kaydet</button>
-  <button class="btn-reset" onclick="resetTournament()">Verileri Sıfırla</button>
-</div>
 
 <!-- Bilgi Notları -->
 <div class="legend-container">
@@ -109,7 +91,7 @@
     <span>Çeyrek Finale Yükselir</span>
   </div>
   <div class="legend-item">
-    <span style="font-weight: bold; color: #dc2626;">(*)</span> 
+    <span style="font-weight: bold; color: #dc2626;">*</span> 
     <span>Kendi isteği ile takım turnuvadan çekilmiştir.</span>
   </div>
 </div>
@@ -122,45 +104,65 @@
 </div>
 
 <script>
-const defaultGroupsData = {
-  "A Grubu": { teams: ["(*)Yayla Janerio", "Yuvalak SK", "Yaylaköy Spor", "Türköz Spor"], matches: [] },
-  "B Grubu": { teams: ["Oscar Pastanesi", "Yaylaspor", "Yayla Gençlik Spor", "Tekin Oto Çavdır"], matches: [] },
-  "C Grubu": { teams: ["Çelikli Spor", "Söğüt FK", "Çavdır FK", "Paşam Organizasyon"], matches: [] },
-  "D Grubu": { teams: ["Korkuteli PSG", "Dostlar Birliği", "Eskidostlar", "Yörükgücü FK"], matches: [] }
+const groupsData = {
+  "A Grubu": { 
+    teams: ["(*)Yayla Janerio", "Yuvalak SK", "Yaylaköy Spor", "Türköz Spor"], 
+    matches: [
+      { week: 1, t1: "(*)Yayla Janerio", t2: "Yuvalak SK", s1: 0, s2: 3 },
+      { week: 1, t1: "Yaylaköy Spor", t2: "Türköz Spor", s1: 3, s2: 3 },
+      { week: 2, t1: "(*)Yayla Janerio", t2: "Yaylaköy Spor", s1: 0, s2: 3 },
+      { week: 2, t1: "Yuvalak SK", t2: "Türköz Spor", s1: 4, s2: 1 },
+      { week: 3, t1: "(*)Yayla Janerio", t2: "Türköz Spor", s1: null, s2: null },
+      { week: 3, t1: "Yuvalak SK", t2: "Yaylaköy Spor", s1: null, s2: null }
+    ] 
+  },
+  "B Grubu": { 
+    teams: ["Oscar Pastanesi", "Yaylaspor", "Yayla Gençlik Spor", "Tekin Oto Çavdır"], 
+    matches: [
+      { week: 1, t1: "Oscar Pastanesi", t2: "Yaylaspor", s1: 1, s2: 3 },
+      { week: 1, t1: "Yayla Gençlik Spor", t2: "Tekin Oto Çavdır", s1: 8, s2: 5 },
+      { week: 2, t1: "Oscar Pastanesi", t2: "Yayla Gençlik Spor", s1: 2, s2: 10 },
+      { week: 2, t1: "Yaylaspor", t2: "Tekin Oto Çavdır", s1: 1, s2: 8 },
+      { week: 3, t1: "Oscar Pastanesi", t2: "Tekin Oto Çavdır", s1: null, s2: null },
+      { week: 3, t1: "Yaylaspor", t2: "Yayla Gençlik Spor", s1: null, s2: null }
+    ] 
+  },
+  "C Grubu": { 
+    teams: ["Çelikli Spor", "Söğüt FK", "Çavdır FK", "Paşam Organizasyon"], 
+    matches: [
+      { week: 1, t1: "Çelikli Spor", t2: "Söğüt FK", s1: 5, s2: 2 },
+      { week: 1, t1: "Çavdır FK", t2: "Paşam Organizasyon", s1: 5, s2: 0 },
+      { week: 2, t1: "Çelikli Spor", t2: "Çavdır FK", s1: 3, s2: 3 },
+      { week: 2, t1: "Söğüt FK", t2: "Paşam Organizasyon", s1: 6, s2: 2 },
+      { week: 3, t1: "Çelikli Spor", t2: "Paşam Organizasyon", s1: null, s2: null },
+      { week: 3, t1: "Söğüt FK", t2: "Çavdır FK", s1: null, s2: null }
+    ] 
+  },
+  "D Grubu": { 
+    teams: ["Korkuteli PSG", "Dostlar Birliği", "Eskidostlar", "Yörükgücü FK"], 
+    matches: [
+      { week: 1, t1: "Korkuteli PSG", t2: "Dostlar Birliği", s1: 5, s2: 3 },
+      { week: 1, t1: "Eskidostlar", t2: "Yörükgücü FK", s1: 5, s2: 1 },
+      { week: 2, t1: "Korkuteli PSG", t2: "Eskidostlar", s1: 9, s2: 2 },
+      { week: 2, t1: "Dostlar Birliği", t2: "Yörükgücü FK", s1: null, s2: null },
+      { week: 3, t1: "Korkuteli PSG", t2: "Yörükgücü FK", s1: null, s2: null },
+      { week: 3, t1: "Dostlar Birliği", t2: "Eskidostlar", s1: null, s2: null }
+    ] 
+  }
 };
 
-let groupsData = {};
-
-// Özel karakterleri ID için temizleyen yardımcı fonksiyon
 function makeSafeId(str) {
-  return str.replace(/[^a-zA-Z0-9]/g, '');
-}
-
-function generateMatches(teams) {
-  return [
-    { week: 1, t1: teams[0], t2: teams[1], s1: null, s2: null },
-    { week: 1, t1: teams[2], t2: teams[3], s1: null, s2: null },
-    { week: 2, t1: teams[0], t2: teams[2], s1: null, s2: null },
-    { week: 2, t1: teams[1], t2: teams[3], s1: null, s2: null },
-    { week: 3, t1: teams[0], t2: teams[3], s1: null, s2: null },
-    { week: 3, t1: teams[1], t2: teams[2], s1: null, s2: null }
-  ];
-}
-
-function loadData() {
-  const savedData = localStorage.getItem('barutluSuTurnuvaData');
-  if (savedData) {
-    groupsData = JSON.parse(savedData);
-  } else {
-    groupsData = JSON.parse(JSON.stringify(defaultGroupsData));
-    for (let gName in groupsData) {
-      groupsData[gName].matches = generateMatches(groupsData[gName].teams);
-    }
-  }
+  return str
+    .replace(/Ğ/g, 'G').replace(/ğ/g, 'g')
+    .replace(/Ü/g, 'U').replace(/ü/g, 'u')
+    .replace(/Ş/g, 'S').replace(/ş/g, 's')
+    .replace(/İ/g, 'I').replace(/ı/g, 'i')
+    .replace(/Ö/g, 'O').replace(/ö/g, 'o')
+    .replace(/Ç/g, 'C').replace(/ç/g, 'c')
+    .replace(/[^a-zA-Z0-9]/g, '');
 }
 
 function initUI() {
-  loadData();
   const container = document.getElementById('groups-wrapper');
   container.innerHTML = '';
 
@@ -203,12 +205,14 @@ function initUI() {
 
   for (let gName in groupsData) {
     groupsData[gName].matches.forEach((m, idx) => {
-      if (m.s1 !== null) document.getElementById(`m-${gName}-${idx}-s1`).value = m.s1;
-      if (m.s2 !== null) document.getElementById(`m-${gName}-${idx}-s2`).value = m.s2;
+      const el1 = document.getElementById(`m-${gName}-${idx}-s1`);
+      const el2 = document.getElementById(`m-${gName}-${idx}-s2`);
+      if (el1) el1.value = m.s1 !== null ? m.s1 : "-";
+      if (el2) el2.value = m.s2 !== null ? m.s2 : "-";
     });
   }
 
-  calculateTournament(false);
+  calculateTournament();
 }
 
 function renderMatchRow(gName, m, idx) {
@@ -216,26 +220,16 @@ function renderMatchRow(gName, m, idx) {
     <div class="match-row">
       <span class="team-name-left">${m.t1}</span>
       <div class="score-inputs">
-        <input type="number" min="0" id="m-${gName}-${idx}-s1" onchange="updateScore('${gName}', ${idx})">
+        <input type="text" id="m-${gName}-${idx}-s1" readonly>
         <span>-</span>
-        <input type="number" min="0" id="m-${gName}-${idx}-s2" onchange="updateScore('${gName}', ${idx})">
+        <input type="text" id="m-${gName}-${idx}-s2" readonly>
       </div>
       <span class="team-name-right">${m.t2}</span>
     </div>
   `;
 }
 
-function updateScore(gName, matchIdx) {
-  const s1Val = document.getElementById(`m-${gName}-${matchIdx}-s1`).value;
-  const s2Val = document.getElementById(`m-${gName}-${matchIdx}-s2`).value;
-  
-  groupsData[gName].matches[matchIdx].s1 = s1Val !== "" ? parseInt(s1Val) : null;
-  groupsData[gName].matches[matchIdx].s2 = s2Val !== "" ? parseInt(s2Val) : null;
-
-  localStorage.setItem('barutluSuTurnuvaData', JSON.stringify(groupsData));
-}
-
-function calculateTournament(shouldAlert = true) {
+function calculateTournament() {
   const qualifiedTeams = {};
 
   for (let gName in groupsData) {
@@ -271,7 +265,7 @@ function calculateTournament(shouldAlert = true) {
 
     let teamList = Object.values(stats);
 
-    // Sıralama Kriterleri: Puan -> İkili Averaj -> Genel Averaj -> Atılan Gol -> Yenilen Gol
+    // Sıralama Önceliği: Puan -> İkili Averaj -> Genel Averaj -> Atılan Gol -> Yenilen Gol (En az)
     teamList.sort((a, b) => {
       if (b.P !== a.P) return b.P - a.P;
 
@@ -287,7 +281,7 @@ function calculateTournament(shouldAlert = true) {
 
       if (b.AV !== a.AV) return b.AV - a.AV;
       if (b.GF !== a.GF) return b.GF - a.GF;
-      return a.GA - b.GA;
+      return a.GA - b.GA; // En az gol yiyen üste çıkar
     });
 
     let tbody = document.getElementById(`table-${gName}`);
@@ -310,15 +304,6 @@ function calculateTournament(shouldAlert = true) {
     <div class="playoff-match"><span>Çeyrek Final 3:</span> <span>${qualifiedTeams["C Grubu"][0]} (C1) vs ${qualifiedTeams["D Grubu"][1]} (D2)</span></div>
     <div class="playoff-match"><span>Çeyrek Final 4:</span> <span>${qualifiedTeams["D Grubu"][0]} (D1) vs ${qualifiedTeams["C Grubu"][1]} (C2)</span></div>
   `;
-
-  localStorage.setItem('barutluSuTurnuvaData', JSON.stringify(groupsData));
-}
-
-function resetTournament() {
-  if (confirm("Şşşşt. Hacı abi emin misin? Tüm skorlar ve turnuva verileri sıfırlanacak.")) {
-    localStorage.removeItem('barutluSuTurnuvaData');
-    initUI();
-  }
 }
 
 window.onload = initUI;
