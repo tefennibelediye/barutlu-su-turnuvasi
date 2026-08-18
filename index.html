@@ -5,7 +5,7 @@
 <title>Barutlu Su Turnuvası Fikstür ve Puan Durumu</title>
 <style>
   body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f9; margin: 20px; color: #333; }
-  h1, h2 { text-align: center; color: #1e293b; }
+  h1, h2, h3 { text-align: center; color: #1e293b; }
   .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 20px; margin-bottom: 30px; }
   .group-card { background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
   .group-title { background: #2563eb; color: white; margin: -15px -15px 15px -15px; padding: 10px; border-radius: 10px 10px 0 0; text-align: center; font-weight: bold; }
@@ -45,7 +45,6 @@
     flex-shrink: 0;
   }
 
-  /* Kilitli ve Editlemesiz Görünüm */
   .match-row input { 
     width: 32px; 
     height: 26px;
@@ -75,10 +74,15 @@
   .legend-item { display: flex; align-items: center; gap: 8px; }
   .badge-qualified { width: 14px; height: 14px; background-color: #dcfce7; border: 1px solid #86efac; border-radius: 3px; display: inline-block; }
 
-  /* Çeyrek Final Alanını Gizleyen Stil */
-  .playoff-container { 
-    display: none !important; 
-  }
+  /* Eleme Turları Stilleri */
+  .playoff-container { display: none !important; }
+  .playoff-container { background: white; border-radius: 10px; padding: 20px; max-width: 900px; margin: 0 auto 30px auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+  .stage-block { margin-bottom: 25px; }
+  .stage-header { background: #0f172a; color: white; padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; }
+  .playoff-match { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #f8fafc; margin-bottom: 8px; border-radius: 6px; font-size: 13px; border: 1px solid #e2e8f0; }
+  .match-time { background: #2563eb; color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
+  .match-teams { font-weight: 600; color: #1e293b; }
+  .final-badge { background: #dc2626; color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
 </style>
 </head>
 <body>
@@ -95,20 +99,84 @@
   </div>
   <div class="legend-item">
     <span style="font-weight: bold; color: #dc2626;">*</span> 
-    <span>Kendi isteği ile takım turnuvadan çekilmiştir.</span>
+    <span>Kendi isteği ile takım turnuvadan çekilmiştir / Hükmen Mağlup.</span>
   </div>
 </div>
 
-<!-- Çeyrek Final Eşleşmeleri (CSS ile Gizlendi) -->
+<!-- Eleme Turları ve Fikstür Takvimi -->
 <div class="playoff-container">
-  <h2>⚔️ Çeyrek Final Eşleşmeleri</h2>
-  <div id="playoffs"></div>
+  <h2>⚔️ ELEME TURLARI VE MAÇ TAKVİMİ</h2>
+  
+  <!-- Çeyrek Final -->
+  <div class="stage-block">
+    <div class="stage-header">
+      <span>⚽ ÇEYREK FİNAL MÜSABAKALARI</span>
+      <span>24 - 25 Ağustos</span>
+    </div>
+    
+    <div style="font-weight: bold; font-size: 12px; color: #64748b; margin: 5px 0;">24 Ağustos Pazartesi</div>
+    <div class="playoff-match">
+      <span class="match-time">20:30</span>
+      <span class="match-teams" id="qf1-teams">A1 vs B2 (ÇF 1)</span>
+    </div>
+    <div class="playoff-match">
+      <span class="match-time">21:45</span>
+      <span class="match-teams" id="qf2-teams">B1 vs A2 (ÇF 2)</span>
+    </div>
+
+    <div style="font-weight: bold; font-size: 12px; color: #64748b; margin: 10px 0 5px 0;">25 Ağustos Salı</div>
+    <div class="playoff-match">
+      <span class="match-time">20:30</span>
+      <span class="match-teams" id="qf3-teams">C1 vs D2 (ÇF 3)</span>
+    </div>
+    <div class="playoff-match">
+      <span class="match-time">21:45</span>
+      <span class="match-teams" id="qf4-teams">D1 vs C2 (ÇF 4)</span>
+    </div>
+  </div>
+
+  <!-- Yarı Final -->
+  <div class="stage-block">
+    <div class="stage-header" style="background: #1e3a8a;">
+      <span>🔥 YARI FİNAL MÜSABAKALARI</span>
+      <span>27 Ağustos Perşembe</span>
+    </div>
+    <div class="playoff-match">
+      <span class="match-time">20:30</span>
+      <span class="match-teams">ÇF 1 Kazananı vs ÇF 3 Kazananı (YF 1)</span>
+    </div>
+    <div class="playoff-match">
+      <span class="match-time">21:45</span>
+      <span class="match-teams">ÇF 2 Kazananı vs ÇF 4 Kazananı (YF 2)</span>
+    </div>
+  </div>
+
+  <!-- Final ve 3.lük -->
+  <div class="stage-block">
+    <div class="stage-header" style="background: #b91c1c;">
+      <span>🇹🇷 FİNAL VE 3.LÜK MÜSABAKALARI (ZAFER BAYRAMI)</span>
+      <span>30 Ağustos Pazar</span>
+    </div>
+    <div class="playoff-match">
+      <span class="match-time" style="background: #d97706;">20:00</span>
+      <span class="match-teams">🥉 YF 1 Mağlubu vs YF 2 Mağlubu (3.lük Maçı)</span>
+    </div>
+    <div class="playoff-match" style="border: 2px solid #dc2626; background: #fff1f2;">
+      <span class="final-badge">21:30</span>
+      <span class="match-teams" style="color: #991b1b; font-size: 14px;">🏆 YF 1 Kazananı vs YF 2 Kazananı (ŞAMPİYONLUK MAÇI)</span>
+    </div>
+  </div>
 </div>
 
 <script>
+// İsimlerdeki (*) vb. işaretleri temizleyerek eşleştirme sağlayan esnek fonksiyon
+function cleanName(str) {
+  return str.replace(/\(\*\)/g, '').replace(/\*/g, '').trim();
+}
+
 const groupsData = {
   "A Grubu": { 
-    teams: ["(*)Yayla Janerio", "Yuvalak SK", "Yaylaköy Spor", "Türköz Spor"], 
+    teams: ["Yayla Janerio", "Yuvalak SK", "Yaylaköy Spor", "Türköz Spor"], 
     matches: [
       { week: 1, t1: "(*)Yayla Janerio", t2: "Yuvalak SK", s1: 0, s2: 3 },
       { week: 1, t1: "Yaylaköy Spor", t2: "Türköz Spor", s1: 3, s2: 3 },
@@ -125,8 +193,8 @@ const groupsData = {
       { week: 1, t1: "Yayla Gençlik Spor", t2: "Tekin Oto Çavdır", s1: 8, s2: 5 },
       { week: 2, t1: "Oscar Pastanesi", t2: "Yayla Gençlik Spor", s1: 2, s2: 10 },
       { week: 2, t1: "Yaylaspor", t2: "Tekin Oto Çavdır", s1: 1, s2: 8 },
-      { week: 3, t1: "Oscar Pastanesi", t2: "Tekin Oto Çavdır", s1: 0, s2: 3 },
-      { week: 3, t1: "Yaylaspor", t2: "Yayla Gençlik Spor", s1: 0, s2: 3 }
+      { week: 3, t1: "(*)Oscar Pastanesi", t2: "Tekin Oto Çavdır", s1: 0, s2: 3 },
+      { week: 3, t1: "(*)Yaylaspor", t2: "Yayla Gençlik Spor", s1: 0, s2: 3 }
     ] 
   },
   "C Grubu": { 
@@ -136,7 +204,7 @@ const groupsData = {
       { week: 1, t1: "Çavdır FK", t2: "Paşam Organizasyon", s1: 5, s2: 0 },
       { week: 2, t1: "Çelikli Spor", t2: "Çavdır FK", s1: 3, s2: 3 },
       { week: 2, t1: "Söğüt FK", t2: "Paşam Organizasyon", s1: 6, s2: 2 },
-      { week: 3, t1: "Çelikli Spor", t2: "Paşam Organizasyon", s1: 3, s2: 0 },
+      { week: 3, t1: "Çelikli Spor", t2: "(*)Paşam Organizasyon", s1: 3, s2: 0 },
       { week: 3, t1: "Söğüt FK", t2: "Çavdır FK", s1: null, s2: null }
     ] 
   },
@@ -147,14 +215,14 @@ const groupsData = {
       { week: 1, t1: "Eskidostlar", t2: "Yörükgücü FK", s1: 5, s2: 1 },
       { week: 2, t1: "Korkuteli PSG", t2: "Eskidostlar", s1: 9, s2: 2 },
       { week: 2, t1: "Dostlar Birliği", t2: "Yörükgücü FK", s1: 8, s2: 2 },
-      { week: 3, t1: "Korkuteli PSG", t2: "Yörükgücü FK", s1: 3, s2: 0 },
+      { week: 3, t1: "Korkuteli PSG", t2: "(*)Yörükgücü FK", s1: 3, s2: 0 },
       { week: 3, t1: "Dostlar Birliği", t2: "Eskidostlar", s1: null, s2: null }
     ] 
   }
 };
 
 function makeSafeId(str) {
-  return str
+  return cleanName(str)
     .replace(/Ğ/g, 'G').replace(/ğ/g, 'g')
     .replace(/Ü/g, 'U').replace(/ü/g, 'u')
     .replace(/Ş/g, 'S').replace(/ş/g, 's')
@@ -232,29 +300,37 @@ function renderMatchRow(gName, m, idx) {
 }
 
 function calculateTournament() {
+  const qualifiedTeams = {};
+
   for (let gName in groupsData) {
     let stats = {};
     groupsData[gName].teams.forEach(t => {
-      stats[t] = { name: t, P: 0, O: 0, G: 0, B: 0, M: 0, GF: 0, GA: 0, AV: 0 };
+      let cName = cleanName(t);
+      stats[cName] = { name: t, P: 0, O: 0, G: 0, B: 0, M: 0, GF: 0, GA: 0, AV: 0 };
     });
 
     let matches = groupsData[gName].matches;
 
     matches.forEach(m => {
       if (m.s1 !== null && m.s2 !== null) {
-        stats[m.t1].O++; stats[m.t2].O++;
-        stats[m.t1].GF += m.s1; stats[m.t1].GA += m.s2;
-        stats[m.t2].GF += m.s2; stats[m.t2].GA += m.s1;
+        let t1Clean = cleanName(m.t1);
+        let t2Clean = cleanName(m.t2);
 
-        if (m.s1 > m.s2) {
-          stats[m.t1].P += 3; stats[m.t1].G++;
-          stats[m.t2].M++;
-        } else if (m.s2 > m.s1) {
-          stats[m.t2].P += 3; stats[m.t2].G++;
-          stats[m.t1].M++;
-        } else {
-          stats[m.t1].P += 1; stats[m.t1].B++;
-          stats[m.t2].P += 1; stats[m.t2].B++;
+        if (stats[t1Clean] && stats[t2Clean]) {
+          stats[t1Clean].O++; stats[t2Clean].O++;
+          stats[t1Clean].GF += m.s1; stats[t1Clean].GA += m.s2;
+          stats[t2Clean].GF += m.s2; stats[t2Clean].GA += m.s1;
+
+          if (m.s1 > m.s2) {
+            stats[t1Clean].P += 3; stats[t1Clean].G++;
+            stats[t2Clean].M++;
+          } else if (m.s2 > m.s1) {
+            stats[t2Clean].P += 3; stats[t2Clean].G++;
+            stats[t1Clean].M++;
+          } else {
+            stats[t1Clean].P += 1; stats[t1Clean].B++;
+            stats[t2Clean].P += 1; stats[t2Clean].B++;
+          }
         }
       }
     });
@@ -268,13 +344,17 @@ function calculateTournament() {
     teamList.sort((a, b) => {
       if (b.P !== a.P) return b.P - a.P;
 
-      let headToHead = matches.find(m => 
-        (m.t1 === a.name && m.t2 === b.name) || (m.t1 === b.name && m.t2 === a.name)
-      );
+      let headToHead = matches.find(m => {
+        let c1 = cleanName(m.t1);
+        let c2 = cleanName(m.t2);
+        let ca = cleanName(a.name);
+        let cb = cleanName(b.name);
+        return (c1 === ca && c2 === cb) || (c1 === cb && c2 === ca);
+      });
 
       if (headToHead && headToHead.s1 !== null && headToHead.s2 !== null) {
-        let aGoals = headToHead.t1 === a.name ? headToHead.s1 : headToHead.s2;
-        let bGoals = headToHead.t1 === b.name ? headToHead.s1 : headToHead.s2;
+        let aGoals = cleanName(headToHead.t1) === cleanName(a.name) ? headToHead.s1 : headToHead.s2;
+        let bGoals = cleanName(headToHead.t1) === cleanName(b.name) ? headToHead.s1 : headToHead.s2;
         if (aGoals !== bGoals) return bGoals - aGoals;
       }
 
@@ -292,7 +372,15 @@ function calculateTournament() {
         <td>${t.GF}</td><td>${t.GA}</td><td>${t.AV}</td><td><strong>${t.P}</strong></td>
       </tr>
     `).join('');
+
+    qualifiedTeams[gName] = [teamList[0].name, teamList[1].name];
   }
+
+  // Çeyrek Final Eşleşme İsimlerini Canlı Güncelle
+  document.getElementById('qf1-teams').innerText = `${qualifiedTeams["A Grubu"][0]} (A1) vs ${qualifiedTeams["B Grubu"][1]} (B2)`;
+  document.getElementById('qf2-teams').innerText = `${qualifiedTeams["B Grubu"][0]} (B1) vs ${qualifiedTeams["A Grubu"][1]} (A2)`;
+  document.getElementById('qf3-teams').innerText = `${qualifiedTeams["C Grubu"][0]} (C1) vs ${qualifiedTeams["D Grubu"][1]} (D2)`;
+  document.getElementById('qf4-teams').innerText = `${qualifiedTeams["D Grubu"][0]} (D1) vs ${qualifiedTeams["C Grubu"][1]} (C2)`;
 }
 
 window.onload = initUI;
