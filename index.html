@@ -75,14 +75,50 @@
   .badge-qualified { width: 14px; height: 14px; background-color: #dcfce7; border: 1px solid #86efac; border-radius: 3px; display: inline-block; }
 
   /* Eleme Turları Stilleri */
-  .playoff-container { display: none !important; }
   .playoff-container { background: white; border-radius: 10px; padding: 20px; max-width: 900px; margin: 0 auto 30px auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+  
   .stage-block { margin-bottom: 25px; }
   .stage-header { background: #0f172a; color: white; padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; }
   .playoff-match { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #f8fafc; margin-bottom: 8px; border-radius: 6px; font-size: 13px; border: 1px solid #e2e8f0; }
   .match-time { background: #2563eb; color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
-  .match-teams { font-weight: 600; color: #1e293b; }
+  .match-teams { font-weight: 600; color: #1e293b; flex-grow: 1; margin: 0 15px; }
+  .match-score { font-weight: 800; font-size: 15px; color: #2563eb; background: #e0e7ff; padding: 2px 10px; border-radius: 4px; }
   .final-badge { background: #dc2626; color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
+
+  /* Şampiyonluk ve Ödüller Stili */
+  .champion-banner {
+    display: none;
+    max-width: 900px;
+    margin: 20px auto 40px auto;
+    background: linear-gradient(135deg, #f59e0b, #b45309);
+    color: white;
+    text-align: center;
+    padding: 25px 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(217, 119, 6, 0.4);
+    border: 4px solid #fef08a;
+  }
+  .champion-title { font-size: 18px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; margin-bottom: 8px; color: #fef08a; }
+  .champion-name { font-size: 32px; font-weight: 900; text-transform: uppercase; text-shadow: 2px 2px 4px rgba(0,0,0,0.4); margin-bottom: 20px; }
+
+  /* Ödül Derece Kartları */
+  .rewards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+  }
+  .reward-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .reward-rank { font-size: 14px; font-weight: bold; color: #fef08a; margin-bottom: 4px; }
+  .reward-team { font-size: 16px; font-weight: 800; color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+  .reward-prize { font-size: 15px; font-weight: 900; color: #000000; margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -111,27 +147,31 @@
   <div class="stage-block">
     <div class="stage-header">
       <span>⚽ ÇEYREK FİNAL MÜSABAKALARI</span>
-      <span>25 - 26 Ağustos</span>
+      <span>24 - 25 Ağustos</span>
     </div>
     
-    <div style="font-weight: bold; font-size: 12px; color: #64748b; margin: 5px 0;">25 Ağustos Salı</div>
+    <div style="font-weight: bold; font-size: 12px; color: #64748b; margin: 5px 0;">24 Ağustos Pazartesi</div>
     <div class="playoff-match">
       <span class="match-time">20:30</span>
       <span class="match-teams" id="qf1-teams">A1 vs B2 (ÇF 1)</span>
+      <span class="match-score" id="qf1-score">-</span>
     </div>
     <div class="playoff-match">
       <span class="match-time">21:45</span>
       <span class="match-teams" id="qf2-teams">B1 vs A2 (ÇF 2)</span>
+      <span class="match-score" id="qf2-score">-</span>
     </div>
 
-    <div style="font-weight: bold; font-size: 12px; color: #64748b; margin: 10px 0 5px 0;">26 Ağustos Çarşamba</div>
+    <div style="font-weight: bold; font-size: 12px; color: #64748b; margin: 10px 0 5px 0;">25 Ağustos Salı</div>
     <div class="playoff-match">
       <span class="match-time">20:30</span>
       <span class="match-teams" id="qf3-teams">C1 vs D2 (ÇF 3)</span>
+      <span class="match-score" id="qf3-score">-</span>
     </div>
     <div class="playoff-match">
       <span class="match-time">21:45</span>
       <span class="match-teams" id="qf4-teams">D1 vs C2 (ÇF 4)</span>
+      <span class="match-score" id="qf4-score">-</span>
     </div>
   </div>
 
@@ -139,15 +179,17 @@
   <div class="stage-block">
     <div class="stage-header" style="background: #1e3a8a;">
       <span>🔥 YARI FİNAL MÜSABAKALARI</span>
-      <span>28 Ağustos Cuma</span>
+      <span>27 Ağustos Perşembe</span>
     </div>
     <div class="playoff-match">
       <span class="match-time">20:30</span>
-      <span class="match-teams">ÇF 1 Kazananı vs ÇF 3 Kazananı (YF 1)</span>
+      <span class="match-teams" id="yf1-teams">ÇF 1 Kazananı vs ÇF 3 Kazananı (YF 1)</span>
+      <span class="match-score" id="yf1-score">-</span>
     </div>
     <div class="playoff-match">
       <span class="match-time">21:45</span>
-      <span class="match-teams">ÇF 2 Kazananı vs ÇF 4 Kazananı (YF 2)</span>
+      <span class="match-teams" id="yf2-teams">ÇF 2 Kazananı vs ÇF 4 Kazananı (YF 2)</span>
+      <span class="match-score" id="yf2-score">-</span>
     </div>
   </div>
 
@@ -159,17 +201,42 @@
     </div>
     <div class="playoff-match">
       <span class="match-time" style="background: #d97706;">20:00</span>
-      <span class="match-teams">🥉 YF 1 Mağlubu vs YF 2 Mağlubu (3.lük Maçı)</span>
+      <span class="match-teams" id="f3-teams">🥉 YF 1 Mağlubu vs YF 2 Mağlubu (3.lük Maçı)</span>
+      <span class="match-score" id="f3-score">-</span>
     </div>
     <div class="playoff-match" style="border: 2px solid #dc2626; background: #fff1f2;">
       <span class="final-badge">21:30</span>
-      <span class="match-teams" style="color: #991b1b; font-size: 14px;">🏆 YF 1 Kazananı vs YF 2 Kazananı (ŞAMPİYONLUK MAÇI)</span>
+      <span class="match-teams" id="final-teams" style="color: #991b1b; font-size: 14px;">🏆 YF 1 Kazananı vs YF 2 Kazananı (ŞAMPİYONLUK MAÇI)</span>
+      <span class="match-score" id="final-score" style="background: #dc2626; color: white;">-</span>
+    </div>
+  </div>
+</div>
+
+<!-- 🏆 ŞAMPİYON VE DERECE YAPAN TAKIMLAR PARASAL ÖDÜL BANNER'I -->
+<div class="champion-banner" id="champion-card">
+  <div class="champion-title">🎉 TURNUVA ŞAMPİYONU 🎉</div>
+  <div class="champion-name" id="champion-team-name">🏆 CHAMPION TEAM 🏆</div>
+  
+  <div class="rewards-grid">
+    <div class="reward-card">
+      <div class="reward-rank">🥇 1. TAKIM 🏆</div>
+      <div class="reward-team" id="prize-rank-1">-</div>
+      <div class="reward-prize">💰 50.000 TL</div>
+    </div>
+    <div class="reward-card">
+      <div class="reward-rank">🥈 2. TAKIM</div>
+      <div class="reward-team" id="prize-rank-2">-</div>
+      <div class="reward-prize">💰 30.000 TL</div>
+    </div>
+    <div class="reward-card">
+      <div class="reward-rank">🥉 3. TAKIM</div>
+      <div class="reward-team" id="prize-rank-3">-</div>
+      <div class="reward-prize">💰 10.000 TL</div>
     </div>
   </div>
 </div>
 
 <script>
-// İsimlerdeki (*) vb. işaretleri temizleyerek eşleştirme sağlayan esnek fonksiyon
 function cleanName(str) {
   return str.replace(/\(\*\)/g, '').replace(/\*/g, '').trim();
 }
@@ -220,6 +287,25 @@ const groupsData = {
     ] 
   }
 };
+
+// --------------------------------------------------------------------------
+// 🏆 ELEME MAÇLARI SKORLARI (MAÇLAR BİTTİKÇE BURAYI GÜNCELLEMEN YETERLİ!)
+// Örnek: qf1_score: "3 - 1" veya penaltılı "2 - 2 (4-3 P)"
+// --------------------------------------------------------------------------
+const playoffMatches = {
+  qf1_score: "-",
+  qf2_score: "-",
+  qf3_score: "-",
+  qf4_score: "-",
+
+  yf1_score: "-",
+  yf2_score: "-",
+
+  f3_score: "-",
+  final_score: "-"
+};
+
+let qualifiedTeamsGlobal = {};
 
 function makeSafeId(str) {
   return cleanName(str)
@@ -283,6 +369,7 @@ function initUI() {
   }
 
   calculateTournament();
+  updatePlayoffsUI();
 }
 
 function renderMatchRow(gName, m, idx) {
@@ -300,8 +387,6 @@ function renderMatchRow(gName, m, idx) {
 }
 
 function calculateTournament() {
-  const qualifiedTeams = {};
-
   for (let gName in groupsData) {
     let stats = {};
     groupsData[gName].teams.forEach(t => {
@@ -373,14 +458,91 @@ function calculateTournament() {
       </tr>
     `).join('');
 
-    qualifiedTeams[gName] = [teamList[0].name, teamList[1].name];
+    qualifiedTeamsGlobal[gName] = [teamList[0].name, teamList[1].name];
   }
+}
 
-  // Çeyrek Final Eşleşme İsimlerini Canlı Güncelle
-  document.getElementById('qf1-teams').innerText = `${qualifiedTeams["A Grubu"][0]} (A1) vs ${qualifiedTeams["B Grubu"][1]} (B2)`;
-  document.getElementById('qf2-teams').innerText = `${qualifiedTeams["B Grubu"][0]} (B1) vs ${qualifiedTeams["A Grubu"][1]} (A2)`;
-  document.getElementById('qf3-teams').innerText = `${qualifiedTeams["C Grubu"][0]} (C1) vs ${qualifiedTeams["D Grubu"][1]} (D2)`;
-  document.getElementById('qf4-teams').innerText = `${qualifiedTeams["D Grubu"][0]} (D1) vs ${qualifiedTeams["C Grubu"][1]} (C2)`;
+function parseWinnerAndLoser(scoreStr, team1, team2) {
+  if (!scoreStr || scoreStr === "-") return { winner: null, loser: null };
+  
+  let parts = scoreStr.split('-').map(s => parseInt(s.trim()));
+  if (parts.length >= 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+    if (parts[0] > parts[1]) return { winner: team1, loser: team2 };
+    if (parts[1] > parts[0]) return { winner: team2, loser: team1 };
+  }
+  return { winner: null, loser: null };
+}
+
+function updatePlayoffsUI() {
+  let qf1_t1 = qualifiedTeamsGlobal["A Grubu"] ? qualifiedTeamsGlobal["A Grubu"][0] : "A1";
+  let qf1_t2 = qualifiedTeamsGlobal["B Grubu"] ? qualifiedTeamsGlobal["B Grubu"][1] : "B2";
+  let qf2_t1 = qualifiedTeamsGlobal["B Grubu"] ? qualifiedTeamsGlobal["B Grubu"][0] : "B1";
+  let qf2_t2 = qualifiedTeamsGlobal["A Grubu"] ? qualifiedTeamsGlobal["A Grubu"][1] : "A2";
+  let qf3_t1 = qualifiedTeamsGlobal["C Grubu"] ? qualifiedTeamsGlobal["C Grubu"][0] : "C1";
+  let qf3_t2 = qualifiedTeamsGlobal["D Grubu"] ? qualifiedTeamsGlobal["D Grubu"][1] : "D2";
+  let qf4_t1 = qualifiedTeamsGlobal["D Grubu"] ? qualifiedTeamsGlobal["D Grubu"][0] : "D1";
+  let qf4_t2 = qualifiedTeamsGlobal["C Grubu"] ? qualifiedTeamsGlobal["C Grubu"][1] : "C2";
+
+  document.getElementById('qf1-teams').innerText = `${qf1_t1} vs ${qf1_t2}`;
+  document.getElementById('qf2-teams').innerText = `${qf2_t1} vs ${qf2_t2}`;
+  document.getElementById('qf3-teams').innerText = `${qf3_t1} vs ${qf3_t2}`;
+  document.getElementById('qf4-teams').innerText = `${qf4_t1} vs ${qf4_t2}`;
+
+  document.getElementById('qf1-score').innerText = playoffMatches.qf1_score;
+  document.getElementById('qf2-score').innerText = playoffMatches.qf2_score;
+  document.getElementById('qf3-score').innerText = playoffMatches.qf3_score;
+  document.getElementById('qf4-score').innerText = playoffMatches.qf4_score;
+
+  let qf1_res = parseWinnerAndLoser(playoffMatches.qf1_score, qf1_t1, qf1_t2);
+  let qf2_res = parseWinnerAndLoser(playoffMatches.qf2_score, qf2_t1, qf2_t2);
+  let qf3_res = parseWinnerAndLoser(playoffMatches.qf3_score, qf3_t1, qf3_t2);
+  let qf4_res = parseWinnerAndLoser(playoffMatches.qf4_score, qf4_t1, qf4_t2);
+
+  let yf1_t1 = qf1_res.winner || "ÇF 1 Kazananı";
+  let yf1_t2 = qf3_res.winner || "ÇF 3 Kazananı";
+  let yf2_t1 = qf2_res.winner || "ÇF 2 Kazananı";
+  let yf2_t2 = qf4_res.winner || "ÇF 4 Kazananı";
+
+  document.getElementById('yf1-teams').innerText = `${yf1_t1} vs ${yf1_t2}`;
+  document.getElementById('yf2-teams').innerText = `${yf2_t1} vs ${yf2_t2}`;
+  document.getElementById('yf1-score').innerText = playoffMatches.yf1_score;
+  document.getElementById('yf2-score').innerText = playoffMatches.yf2_score;
+
+  let yf1_res = parseWinnerAndLoser(playoffMatches.yf1_score, yf1_t1, yf1_t2);
+  let yf2_res = parseWinnerAndLoser(playoffMatches.yf2_score, yf2_t1, yf2_t2);
+
+  let f3_t1 = yf1_res.loser || "YF 1 Mağlubu";
+  let f3_t2 = yf2_res.loser || "YF 2 Mağlubu";
+  let final_t1 = yf1_res.winner || "YF 1 Kazananı";
+  let final_t2 = yf2_res.winner || "YF 2 Kazananı";
+
+  document.getElementById('f3-teams').innerText = `🥉 ${f3_t1} vs ${f3_t2} (3.lük Maçı)`;
+  document.getElementById('final-teams').innerText = `🏆 ${final_t1} vs ${final_t2} (ŞAMPİYONLUK MAÇI)`;
+  document.getElementById('f3-score').innerText = playoffMatches.f3_score;
+  document.getElementById('final-score').innerText = playoffMatches.final_score;
+
+  // 4. Türkçe Karakter Uyumlu Şampiyon ve Ödüller Kartı
+  let final_res = parseWinnerAndLoser(playoffMatches.final_score, final_t1, final_t2);
+  let f3_res = parseWinnerAndLoser(playoffMatches.f3_score, f3_t1, f3_t2);
+  
+  let champBanner = document.getElementById('champion-card');
+  let champName = document.getElementById('champion-team-name');
+
+  if (final_res.winner) {
+    let champFormatted = final_res.winner.toLocaleUpperCase('tr-TR');
+    let runnerUpFormatted = final_res.loser ? final_res.loser.toLocaleUpperCase('tr-TR') : "-";
+    let thirdFormatted = f3_res.winner ? f3_res.winner.toLocaleUpperCase('tr-TR') : "-";
+
+    champName.innerText = `🏆🎉 ŞAMPİYON ${champFormatted} 🎉🏆`;
+    
+    document.getElementById('prize-rank-1').innerText = champFormatted;
+    document.getElementById('prize-rank-2').innerText = runnerUpFormatted;
+    document.getElementById('prize-rank-3').innerText = thirdFormatted;
+
+    champBanner.style.display = 'block';
+  } else {
+    champBanner.style.display = 'none';
+  }
 }
 
 window.onload = initUI;
@@ -388,7 +550,7 @@ window.onload = initUI;
 // Sağ Tık Engeli ve Kırmızı Kart Mesajı
 document.addEventListener('contextmenu', function(e) {
   e.preventDefault();
-  alert("🛑 Sağ tık yapmak, Kod kopyalamak KIRMIZI KART ve İHRAÇ sebebidir! TURNUVA TERTİP KOMİTESİ 😄⚽");
+  alert("🛑 Sağ tık yapmak, Kod kopyalamak kırmızı kart sebebidir! TURNUVA TERTİP KOMİTESİ 😄⚽");
 });
 </script>
 
