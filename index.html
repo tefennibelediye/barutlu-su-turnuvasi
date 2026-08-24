@@ -196,12 +196,12 @@
   <!-- Final ve 3.lük -->
   <div class="stage-block">
     <div class="stage-header" style="background: #b91c1c;">
-      <span>🇹🇷 FİNAL VE 3.LÜK MÜSABAKALARI (ZAFER BAYRAMI)</span>
+      <span>&#127937; ÜÇÜNCÜLÜK ve FİNAL MÜSABAKALARI (ZAFER BAYRAMI)</span>
       <span>30 Ağustos Pazar</span>
     </div>
     <div class="playoff-match">
       <span class="match-time" style="background: #d97706;">20:00</span>
-      <span class="match-teams" id="f3-teams">🥉 YF 1 Mağlubu vs YF 2 Mağlubu (3.lük Maçı)</span>
+      <span class="match-teams" id="f3-teams">🥉 YF 1 Mağlubu vs YF 2 Mağlubu (Üçüncülük Maçı)</span>
       <span class="match-score" id="f3-score">-</span>
     </div>
     <div class="playoff-match" style="border: 2px solid #dc2626; background: #fff1f2;">
@@ -219,17 +219,17 @@
   
   <div class="rewards-grid">
     <div class="reward-card">
-      <div class="reward-rank">🥇 1. TAKIM 🏆</div>
+      <div class="reward-rank">🥇 ŞAMPİYON</div>
       <div class="reward-team" id="prize-rank-1">-</div>
       <div class="reward-prize">💰 50.000 TL</div>
     </div>
     <div class="reward-card">
-      <div class="reward-rank">🥈 2. TAKIM</div>
+      <div class="reward-rank">🥈 TURNUVA 2.Sİ</div>
       <div class="reward-team" id="prize-rank-2">-</div>
       <div class="reward-prize">💰 30.000 TL</div>
     </div>
     <div class="reward-card">
-      <div class="reward-rank">🥉 3. TAKIM</div>
+      <div class="reward-rank">🥉 TURNUVA 3.SÜ</div>
       <div class="reward-team" id="prize-rank-3">-</div>
       <div class="reward-prize">💰 10.000 TL</div>
     </div>
@@ -289,20 +289,19 @@ const groupsData = {
 };
 
 // --------------------------------------------------------------------------
-// 🏆 ELEME MAÇLARI SKORLARI (MAÇLAR BİTTİKÇE BURAYI GÜNCELLEMEN YETERLİ!)
-// Örnek: qf1_score: "3 - 1" veya penaltılı "2 - 2 (4-3 P)"
+// 🏆 ELEME MAÇLARI SKORLARI
 // --------------------------------------------------------------------------
 const playoffMatches = {
-  qf1_score: "-",
-  qf2_score: "-",
-  qf3_score: "-",
-  qf4_score: "-",
+  qf1_score: " - ",
+  qf2_score: " - ",
+  qf3_score: " - ",
+  qf4_score: " - ",
 
-  yf1_score: "-",
-  yf2_score: "-",
+  yf1_score: " - ",
+  yf2_score: " - ",
 
-  f3_score: "-",
-  final_score: "-"
+  f3_score: " - ",
+  final_score: " - "
 };
 
 let qualifiedTeamsGlobal = {};
@@ -516,7 +515,7 @@ function updatePlayoffsUI() {
   let final_t1 = yf1_res.winner || "YF 1 Kazananı";
   let final_t2 = yf2_res.winner || "YF 2 Kazananı";
 
-  document.getElementById('f3-teams').innerText = `🥉 ${f3_t1} vs ${f3_t2} (3.lük Maçı)`;
+  document.getElementById('f3-teams').innerText = `🥉 ${f3_t1} vs ${f3_t2} (ÜÇÜNCÜLÜK MAÇI)`;
   document.getElementById('final-teams').innerText = `🏆 ${final_t1} vs ${final_t2} (ŞAMPİYONLUK MAÇI)`;
   document.getElementById('f3-score').innerText = playoffMatches.f3_score;
   document.getElementById('final-score').innerText = playoffMatches.final_score;
@@ -529,6 +528,7 @@ function updatePlayoffsUI() {
   let champName = document.getElementById('champion-team-name');
 
   if (final_res.winner) {
+    // .toLocaleUpperCase('tr-TR') ile Türkçe harf düzeltmesi (İ, Ç, Ğ, Ş)
     let champFormatted = final_res.winner.toLocaleUpperCase('tr-TR');
     let runnerUpFormatted = final_res.loser ? final_res.loser.toLocaleUpperCase('tr-TR') : "-";
     let thirdFormatted = f3_res.winner ? f3_res.winner.toLocaleUpperCase('tr-TR') : "-";
