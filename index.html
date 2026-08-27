@@ -298,7 +298,7 @@ const playoffMatches = {
   qf4_score: "0 - 6",
 
   yf1_score: "1 - 4",
-  yf2_score: "5 - 4",
+  yf2_score: "2 - 2 (5-4 P)", // 5-4 Yayla Gençlik Spor kazandı!
 
   f3_score: " - ",
   final_score: " - "
@@ -462,9 +462,21 @@ function calculateTournament() {
 }
 
 function parseWinnerAndLoser(scoreStr, team1, team2) {
-  if (!scoreStr || scoreStr === "-") return { winner: null, loser: null };
+  if (!scoreStr || scoreStr === "-" || scoreStr.trim() === "-") return { winner: null, loser: null };
   
-  let parts = scoreStr.split('-').map(s => parseInt(s.trim()));
+  // Parantez içi penaltı skoru varsa (Örn: "1 - 1 (5-4 P)")
+  if (scoreStr.includes('(')) {
+    let penaltyPart = scoreStr.split('(')[1].replace(')', '').replace(/P/g, '').trim();
+    let pParts = penaltyPart.split('-').map(s => parseInt(s.trim()));
+    if (pParts.length >= 2 && !isNaN(pParts[0]) && !isNaN(pParts[1])) {
+      if (pParts[0] > pParts[1]) return { winner: team1, loser: team2 };
+      if (pParts[1] > pParts[0]) return { winner: team2, loser: team1 };
+    }
+  }
+
+  // Normal süre skoru kontrolü
+  let mainScore = scoreStr.split('(')[0].trim();
+  let parts = mainScore.split('-').map(s => parseInt(s.trim()));
   if (parts.length >= 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
     if (parts[0] > parts[1]) return { winner: team1, loser: team2 };
     if (parts[1] > parts[0]) return { winner: team2, loser: team1 };
